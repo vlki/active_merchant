@@ -5,15 +5,21 @@ module ActiveMerchant #:nodoc:
       GATEWAY_URL = 'https://www.moneybookers.com/app/payment.pl'
       API_URL = 'https://www.moneybookers.com/app/query.pl'
 
-      self.supported_countries = ['CS', 'GB']
+      self.supported_countries = ['GB', 'CS']
       self.homepage_url = 'https://www.moneybookers.com/app/help.pl?s=m_shoppingcart'
       self.display_name = 'Moneybookers'
       
       def initialize(options = {})
-        #requires!(options, :login, :password)
+        requires!(options, :login, :secret_word_digest, :api_password_digest)
         @options = options
         super
-      end  
+      end
+
+      def setup_purchase(money, options = {})
+        requires!(options, :return_url, :cancel_return_url)
+
+
+      end
       
       def authorize(money, creditcard, options = {})
         post = {}
