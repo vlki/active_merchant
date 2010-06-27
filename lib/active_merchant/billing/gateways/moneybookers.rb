@@ -1,20 +1,13 @@
 module ActiveMerchant #:nodoc:
   module Billing #:nodoc:
     class MoneybookersGateway < Gateway
-      TEST_URL = 'https://example.com/test'
-      LIVE_URL = 'https://example.com/live'
-      
-      # The countries the gateway supports merchants from as 2 digit ISO country codes
-      self.supported_countries = ['US']
-      
-      # The card types supported by the payment gateway
-      self.supported_cardtypes = [:visa, :master, :american_express, :discover]
-      
-      # The homepage URL of the gateway
-      self.homepage_url = 'http://www.example.net/'
-      
-      # The name of the gateway
-      self.display_name = 'New Gateway'
+
+      GATEWAY_URL = 'https://www.moneybookers.com/app/payment.pl'
+      API_URL = 'https://www.moneybookers.com/app/query.pl'
+
+      self.supported_countries = ['CS', 'GB']
+      self.homepage_url = 'https://www.moneybookers.com/app/help.pl?s=m_shoppingcart'
+      self.display_name = 'Moneybookers'
       
       def initialize(options = {})
         #requires!(options, :login, :password)
