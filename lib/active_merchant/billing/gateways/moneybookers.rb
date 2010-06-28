@@ -8,7 +8,9 @@ module ActiveMerchant #:nodoc:
       self.supported_countries = ['GB', 'CS']
       self.homepage_url = 'https://www.moneybookers.com/app/help.pl?s=m_shoppingcart'
       self.display_name = 'Moneybookers'
-      
+
+      self.default_currency = 'USD'
+
       def initialize(options = {})
         requires!(options, :login, :secret_word_digest, :api_password_digest)
         @options = options
@@ -21,16 +23,6 @@ module ActiveMerchant #:nodoc:
 
       end
       
-      def authorize(money, creditcard, options = {})
-        post = {}
-        add_invoice(post, options)
-        add_creditcard(post, creditcard)        
-        add_address(post, creditcard, options)        
-        add_customer_data(post, options)
-        
-        commit('authonly', money, post)
-      end
-      
       def purchase(money, creditcard, options = {})
         post = {}
         add_invoice(post, options)
@@ -40,10 +32,6 @@ module ActiveMerchant #:nodoc:
              
         commit('sale', money, post)
       end                       
-    
-      def capture(money, authorization, options = {})
-        commit('capture', money, post)
-      end
     
       private                       
       

@@ -4,10 +4,10 @@ class MoneybookersTest < Test::Unit::TestCase
   def setup
     @gateway = MoneybookersGateway.new(
                  :login => 'login',
-                 :password => 'password'
+                 :secret_word_digest => 'secret_word_digest',
+                 :api_password_digest => 'api_password_digest'
                )
 
-    @credit_card = credit_card
     @amount = 100
     
     @options = { 
@@ -17,33 +17,45 @@ class MoneybookersTest < Test::Unit::TestCase
     }
   end
   
-  def test_successful_purchase
-    @gateway.expects(:ssl_post).returns(successful_purchase_response)
-    
-    assert response = @gateway.purchase(@amount, @credit_card, @options)
-    assert_instance_of 
-    assert_success response
-    
-    # Replace with authorization number from the successful response
-    assert_equal '', response.authorization
-    assert response.test?
+#  def test_successful_purchase
+#    @gateway.expects(:ssl_post).returns(successful_purchase_response)
+#
+#    assert response = @gateway.purchase(@amount, @credit_card, @options)
+#    assert_instance_of
+#    assert_success response
+#
+#    # Replace with authorization number from the successful response
+#    assert_equal '', response.authorization
+#    assert response.test?
+#  end
+#
+#  def test_unsuccessful_request
+#    @gateway.expects(:ssl_post).returns(failed_purchase_response)
+#
+#    assert response = @gateway.purchase(@amount, @credit_card, @options)
+#    assert_failure response
+#    assert response.test?
+#  end
+
+  def test_successful_setup_of_purchase
+    @gateway.expects(:ssl_post).returns(successful_setup_purchase_response)
   end
 
-  def test_unsuccessful_request
-    @gateway.expects(:ssl_post).returns(failed_purchase_response)
-    
-    assert response = @gateway.purchase(@amount, @credit_card, @options)
-    assert_failure response
-    assert response.test?
-  end
 
   private
-  
+
+  def successful_setup_purchase_response
+    <<-RESPONSE
+
+    RESPONSE
+  end
+
   # Place raw successful response from gateway here
   def successful_purchase_response
+
   end
   
   # Place raw failed response from gateway here
-  def failed_purcahse_response
+  def failed_purchase_response
   end
 end

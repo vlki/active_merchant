@@ -93,6 +93,11 @@ moneris:
   login: store1
   password: yesguy
 
+moneybookers:
+  login: merchant@email
+  secret_word_digest: md5_digest_of_secret_word
+  api_password_digest: md5_digest_of_api_password
+
 # Working credentials, no need to replace
 # Contact Netbilling for login info to the admin area  
 netbilling:
