@@ -20,43 +20,48 @@ module ActiveMerchant #:nodoc:
       def setup_purchase(money, options = {})
         requires!(options, :return_url, :cancel_return_url)
 
+        params = {
+          :language => 'EN',
+          :currency => currency(money),
+          :prepare_only => '1',
+          :detail1_description => 'Test: ',
+          :detail1_text => 'Product',
+          :amount => amount(money),
+          :pay_to_email => '', #@options[:login],
+        }.update(options)
 
+        response = ssl_post(GATEWAY_URL, post_data(params))
+
+        if response =~ /^[a-z0-9]{32}$/
+          Response.new(true, 'OK', { :sid => response, :data => response } )
+        else
+          Response.new(false, 'Setup of purchase was not successful', { :sid => nil, :data => response } )
+        end
       end
-      
-      def purchase(money, creditcard, options = {})
-        post = {}
-        add_invoice(post, options)
-        add_creditcard(post, creditcard)        
-        add_address(post, creditcard, options)   
-        add_customer_data(post, options)
-             
-        commit('sale', money, post)
-      end                       
+
+      def redirect_url_for(sid)
+        "#{GATEWAY_URL}?sid=#{sid}"
+      end
+
+      def details_for(transaction_id)
+        # TODO: action status_trn from API manual
+      end
     
       private                       
-      
-      def add_customer_data(post, options)
-      end
-
-      def add_address(post, creditcard, options)      
-      end
-
-      def add_invoice(post, options)
-      end
-      
-      def add_creditcard(post, creditcard)      
-      end
-      
       def parse(body)
+        # TODO: parsing response from Automated Payment Interface 
       end     
       
       def commit(action, money, parameters)
+        # TODO: commit action to Automated Payment Interface
       end
 
       def message_from(response)
+        # TODO: parse message from API
       end
       
-      def post_data(action, parameters = {})
+      def post_data(parameters = {})
+        parameters.collect { |key, value| "#{key}=#{CGI.escape(value.to_s)}" }.join("&")
       end
     end
   end
